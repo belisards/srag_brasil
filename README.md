@@ -1,5 +1,5 @@
 # Dados de SRAG no Brasil
-Compilados a partir do SIVEP-Gripe e boletins epidemiológicos.
+Compilados a partir do SIVEP-Gripe e boletins epidemiológicos. As datas das semanas epidemiológicas deste ano podem ser encontradas no [calendário epidemiológico de 2020](https://portalsinan.saude.gov.br/calendario-epidemiologico-2020).
 
 **Atenção**: os dados são atualizados retroativamente. Ou seja, quanto mais recente, maior a chance de estar subestimado em relação aos números reais.
 
