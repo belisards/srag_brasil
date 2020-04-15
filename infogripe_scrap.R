@@ -32,5 +32,7 @@ df = df %>% filter(territory_name != 'Brasil')
 
 write_csv(df[,c("ano","epiweek","casos","territory_name", "situation_name","value")],"dados_uf.csv")
 
-write_csv(df[,c("ano","epiweek","casos","territory_name", "situation_name","value")],"dados_br.csv")
+write_csv(df_brasil[,c("ano","epiweek","casos","territory_name", "situation_name","value")],"dados_br.csv")
 
+# Checa se todas as semanas estão com as 27 unidades federativas
+# df %>% group_by(ano,epiweek) %>% count() %>% filter(n < 27)
