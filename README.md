@@ -1,7 +1,7 @@
 # Dados de SRAG no Brasil
 Script para extrair dados do [Info-Gripe](http://info.gripe.fiocruz.br/), sistema da Fiocruz que disponibiliza informações sobre hospitalizações por Síndrome Respiratória Aguda Grave (SRAG) desde 2009. O script foi escrito em R, inicialmente inspirado nessa [outra abordagem feita em Python por @rodolfo-viana](https://github.com/rodolfo-viana/dailylog/blob/master/scripts/covid19srag.py) para coleta dos agregados por estado.
 
-Os dados são exportados em dois arquivos CSVs:
+Os dados são exportados em três arquivos CSVs:
 
 * **casos_br.csv** traz o total de casos agregado do país por ano e semana epidemiológica.
 
