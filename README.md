@@ -3,8 +3,10 @@ Script para extrair dados do [Info-Gripe](http://info.gripe.fiocruz.br/), sistem
 
 Os dados são exportados em dois arquivos CSVs:
 
-* **dados_br.csv** traz o agregado do país por ano e semana epidemiológica.
+* **casos_br.csv** traz o total de casos agregado do país por ano e semana epidemiológica.
 
-* **dados_uf.csv** traz o agregado por UF, ano e semana epidemiológica.
+* **casos_uf.csv** traz o total de casos agregado por UF, ano e semana epidemiológica.
 
-**Atenção**: Todos os dados de 2020 são classificados como "estimados" e devem sofrer alterações (provavelmente estão ainda subnotificados). Confira o campo `situation_name` para mais informações.
+* **detalhe_br.csv** traz o detalhamento de casos por gênero e faixa etária.
+
+**Atenção**: Os dados de 2020 são classificados como "estimados" e devem sofrer alterações (provavelmente estão ainda subnotificados). Confira o campo `situation_name` para mais informações.
