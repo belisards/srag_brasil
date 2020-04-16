@@ -1,38 +1,28 @@
-# Script para extrair dados de SRAG do site Infogripe
-# Baseado neste script de Rodolfo Viana
-# https://github.com/rodolfo-viana/dailylog/blob/master/scripts/covid19srag.py
-
+# Script para extrair dados de SRAG do site Infogripe - http://info.gripe.fiocruz.br/
 library(tidyverse)
 
-df = data.frame()
+# Gera os links, criando todas as combinações de semanas (1:53) e anos (2018:2020), no formato da URL
+lista_links = do.call(sprintf, c(expand.grid(2009:2020,1:53), fmt = 'http://info.gripe.fiocruz.br/data/detailed/1/2/%s/%s/1/Brasil/data-table'))
 
-for (ano in 2009:2020){
-  
-  #SE = Semana Epidemiológica (epiweek)
-  for (SE in 1:53){
-    
-    print(paste('Acessando a SE',SE,"do ano",ano))
-    url = stringr::str_glue('http://info.gripe.fiocruz.br/data/detailed/1/2/{ano}/{SE}/1/Brasil/data-table')
-    dados_json = jsonlite::fromJSON(url) %>% purrr::pluck("data") 
-    
-    # Solicitar a SE 53 para anos que não a possuem geram JSON nulos. Não os queremos.
-    if (!is.null(dados_json)) { 
-    dados = dados_json %>% mutate(ano = ano)
-    }
-    df = rbind(df,dados)
+# Ao raspar os dados, descataremos JSON nulos e vamos adicionar um campo com a URL de onde foram extraídos.
+raspa_link = function(link){
+  print(paste("Acessando a URL: ",link))
+  arquivo = jsonlite::fromJSON(link) %>% purrr::pluck("data") 
+  if (!is.null(arquivo)) { 
+    arquivo %>% mutate(url = link)
   }
 }
 
-# Vamos remover registros duplicados. E criar um campo numérico para os casos.
-df = df[!duplicated(df),] %>% mutate(casos = as.integer(str_extract(value,"[0-9]+"))) 
+# Cria a base e adiciona um campo numérico com os casos e outro com o ano
+base = bind_rows(lapply(lista_links,raspa_link)) %>% mutate(casos = as.integer(str_extract(value,"[0-9]+"))) %>% mutate(ano = str_extract(url,'\\d{4}'))
 
-# E separar 2 datasets. Um nacional agregado e outro por UF.
-df_brasil = df %>% filter(territory_name == 'Brasil') 
-df = df %>% filter(territory_name != 'Brasil') 
+# Separamos os dados agregados por UF dos dados agregados nacionais
+nacional = base %>% filter(territory_name == 'Brasil') 
+estadual = base %>% filter(territory_name != 'Brasil') 
 
-write_csv(df[,c("ano","epiweek","casos","territory_name", "situation_name","value")],"dados_uf.csv")
+# Vamos reordenar as colunas na hora de exportar os dados para facilitar a leitura
+ordem_colunas = c("ano","epiweek","casos","territory_name", "situation_name","value")
 
-write_csv(df_brasil[,c("ano","epiweek","casos","territory_name", "situation_name","value")],"dados_br.csv")
-
-# Checa se todas as semanas estão com as 27 unidades federativas
-# df %>% group_by(ano,epiweek) %>% count() %>% filter(n < 27)
+# Exporta os arquivos
+write_csv(estadual[,ordem_colunas],"dados_uf.csv")
+write_csv(nacional[,ordem_colunas],"dados_br.csv")
