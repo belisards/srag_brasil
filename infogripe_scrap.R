@@ -1,20 +1,20 @@
 # Script para extrair dados de SRAG do site Infogripe - http://info.gripe.fiocruz.br/
 library(tidyverse)
+
 ##################### PARÂMETROS GERAIS ############################################
 semana = 1:53
 ano = 2009:2020
 url_base = 'http://info.gripe.fiocruz.br/data/detailed/1/2/'
-#estados = read.csv('https://raw.githubusercontent.com/belisards/dados_auxiliares/master/UFs.csv')
+estados = read.csv('https://raw.githubusercontent.com/belisards/dados_auxiliares/master/UFs.csv')
 
 # Gera os links, criando todas as combinações de semanas (1:53) e anos (2018:2020), no formato da URL
 url_casos = paste(url_base,"%s/%s/1/Brasil/","data-table", sep = '')
 url_detalhe = paste(url_base,"%s/%s/Brasil/","age-distribution", sep = '')
-#url_detalheUF = paste(url_base,"%s/%s/%s/","age-distribution",sep='')
+url_detalheUF = paste(url_base,"%s/%s/%s/","age-distribution",sep='')
 
 lista_casos = do.call(sprintf, c(expand.grid(ano,semana), fmt = url_casos))
 lista_detalhe = do.call(sprintf, c(expand.grid(ano,semana), fmt = url_detalhe))
-#lista_detalheUF = do.call(sprintf, c(expand.grid(ano,semana,estados$estado), fmt = url_detalheUF))
-
+s
 
 ##################### FUNÇÕES ############################################
 # Ao raspar os dados, descataremos JSON nulos e vamos adicionar um campo com a URL de onde foram extraídos.
